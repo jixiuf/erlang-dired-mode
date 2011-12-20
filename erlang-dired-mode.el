@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2011-12-20 22:50:00 星期二
+;; Last Updated: Joseph 2011-12-20 23:07:06 星期二
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Maintainer:  Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
@@ -47,7 +47,27 @@
 
 (require 'erlang)
 
-;; erlang-dired mode
+(eval-when-compile
+  (defvar comment-indent-hook)
+  (defvar dabbrev-case-fold-search)
+  (defvar tempo-match-finder)
+  (defvar compilation-menu-map)
+  (defvar next-error-last-buffer))
+
+(eval-when-compile
+  (if (or (featurep 'bytecomp)
+          (featurep 'byte-compile))
+      (progn
+        (cond ((string-match "Lucid\\|XEmacs" emacs-version)
+               (put 'comment-indent-hook 'byte-obsolete-variable nil)
+               ;; Do not warn for unused variables
+               ;; when compiling under XEmacs.
+               (setq byte-compile-warnings
+                     '(free-vars unresolved callargs redefine))))
+        (require 'comint)
+        (require 'tempo)
+        (require 'compile))))
+
 (defun erlang-root ()
   "Look for Emakefile file to find project root of erlang application."
   (locate-dominating-file default-directory "Emakefile"))
@@ -59,17 +79,16 @@
   (inferior-erlang-prepare-for-input)
   (let* ((default-dir default-directory)
          end)
-    (save-excursion
-      (set-buffer inferior-erlang-buffer)
+    (with-current-buffer inferior-erlang-buffer
       (compilation-forget-errors))
+
     (inferior-erlang-send-command
      (format "cd(\"%s\")." ( erlang-root)) nil)
     (sit-for 0)
     (inferior-erlang-wait-prompt)
 
     (inferior-erlang-send-command
-     "make:all([load])."
-     nil)
+     "make:all([load])." nil)
     (sit-for 0)
     (inferior-erlang-wait-prompt)
 
@@ -77,8 +96,7 @@
                (format "cd(\"%s\")." default-dir) nil))
     (sit-for 0)
     (inferior-erlang-wait-prompt)
-    (save-excursion
-      (set-buffer inferior-erlang-buffer)
+    (with-current-buffer inferior-erlang-buffer
       (setq compilation-error-list nil)
       (set-marker compilation-parsing-end end))
     (setq compilation-last-buffer inferior-erlang-buffer)))
@@ -111,6 +129,5 @@
 ;;;###autoload
 (add-hook 'dired-mode-hook 'erlang-dired-mode-fun)
 
-
-(provide 'erlang-dired)
+(provide 'erlang-dired-mode)
 ;;; erlang-dired.el ends here
