@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-01-07 17:32:34 星期六
+;; Last Updated: Joseph 2012-01-07 17:33:35 星期六
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Maintainer:  Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
@@ -71,7 +71,7 @@
 
 ;;;###autoload
 (defun erlang-create-project(root-dir)
-  (interactive "D")
+  (interactive "Dselect a directory to create erlang project")
   (unless (file-exists-p root-dir)
     (make-directory root-dir))
   (unless (file-directory-p root-dir)
