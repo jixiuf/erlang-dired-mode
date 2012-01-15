@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2011-12-20 23:11:15 星期二
+;; Last Updated: Joseph 2012-01-15 16:11:25 星期日
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Maintainer:  Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
@@ -78,8 +78,7 @@
   (interactive "P")
   (save-some-buffers)
   (inferior-erlang-prepare-for-input)
-  (let* ((default-dir default-directory)
-         end)
+  (let* (end)
     (with-current-buffer inferior-erlang-buffer
       (compilation-forget-errors))
 
@@ -94,7 +93,7 @@
     (inferior-erlang-wait-prompt)
 
     (setq end (inferior-erlang-send-command
-               (format "cd(\"%s\")." default-dir) nil))
+               (format "cd(\"ebin\")." ) nil))
     (sit-for 0)
     (inferior-erlang-wait-prompt)
     (with-current-buffer inferior-erlang-buffer
