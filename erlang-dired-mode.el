@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-01-15 16:11:25 星期日
+;; Last Updated: Joseph 2012-01-15 16:13:18 星期日
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Maintainer:  Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
@@ -69,6 +69,23 @@
         (require 'tempo)
         (require 'compile))))
 
+;;;###autoload
+(defun erlang-create-project(root-dir)
+  (interactive "Dselect a directory to create erlang project")
+  (unless (file-exists-p root-dir)
+    (make-directory root-dir))
+  (unless (file-directory-p root-dir)
+    (error "%s is not a directory!",root-dir))
+  (make-directory (expand-file-name  "src"  root-dir) t)
+  (make-directory (expand-file-name  "include" root-dir) t)
+  (make-directory (expand-file-name "ebin" root-dir) t)
+  (make-directory (expand-file-name  "test" root-dir) t)
+  (with-temp-file (expand-file-name "Emakefile" root-dir)
+    (insert "{ 'src/*', [debug_info, {i ,\"include/\"} ,{outdir,\"ebin/\"}] }.\n")
+    (insert "{ 'test/*', [debug_info, {i ,\"src/\"}, {i ,\"include/\"}, {outdir,\"ebin\"} ] }.\n")
+    )
+  )
+
 (defun erlang-root ()
   "Look for Emakefile file to find project root of erlang application."
   (locate-dominating-file default-directory "Emakefile"))
@@ -102,6 +119,7 @@
     (setq compilation-last-buffer inferior-erlang-buffer)))
 
 
+;;;###autoload
 (defun erlang-dired-emake ()
   "Compile Erlang module in current buffer."
   (interactive)
@@ -112,6 +130,7 @@
     (define-key map (kbd "C-c C-z") 'erlang-shell-display)
     (define-key map (kbd "C-c C-l") 'erlang-compile-display)
     (define-key map (kbd "C-c C-k") 'erlang-dired-emake) ;run make:all([load])
+    (define-key map (kbd "C-c C-p") ' erlang-create-project) ; you should bind this fun
     map))
 
 ;; (define-key erlang-dired-mode-map (kbd "C-z s") 'erlang-dired-emake)
