@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-01-07 17:33:35 星期六
+;; Last Updated: Joseph 2012-01-20 21:48:46 星期五
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Maintainer:  Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
@@ -88,7 +88,7 @@
 
 (defun erlang-root ()
   "Look for Emakefile file to find project root of erlang application."
-  (locate-dominating-file default-directory "Emakefile"))
+  (expand-file-name (locate-dominating-file default-directory "Emakefile")))
 
 (defun inferior-erlang-emake (arg)
   "run make:all(load) in project root of erlang application."
