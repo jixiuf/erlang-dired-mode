@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-01-15 16:14:18 星期日
+;; Last Updated: Joseph 2012-02-03 11:09:50 星期五
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Maintainer:  Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
@@ -71,7 +71,7 @@
 
 ;;;###autoload
 (defun erlang-create-project(root-dir)
-  (interactive "Dselect a directory to create erlang project")
+  (interactive "Fselect a directory to create erlang project")
   (unless (file-exists-p root-dir)
     (make-directory root-dir))
   (unless (file-directory-p root-dir)
@@ -86,9 +86,13 @@
     )
   )
 
+
 (defun erlang-root ()
   "Look for Emakefile file to find project root of erlang application."
-  (locate-dominating-file default-directory "Emakefile"))
+  (let ((erlang-root (locate-dominating-file default-directory "Emakefile")))
+    (if erlang-root
+        (expand-file-name erlang-root)
+      nil)))
 
 (defun inferior-erlang-emake (arg)
   "run make:all(load) in project root of erlang application."
@@ -110,7 +114,7 @@
     (inferior-erlang-wait-prompt)
 
     (setq end (inferior-erlang-send-command
-               (format "cd(\"ebin\")." ) nil))
+               "cd(\"ebin/\")." nil))
     (sit-for 0)
     (inferior-erlang-wait-prompt)
     (with-current-buffer inferior-erlang-buffer
