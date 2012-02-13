@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-02-07 14:12:27 星期二
+;; Last Updated: Joseph 2012-02-10 11:50:04 金曜日
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Maintainer:  Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
@@ -26,18 +26,29 @@
 
 ;;; Commentary:
 
+;; when you open dired mode buffer ,if a Emakefile are in current or parent
+;; directory recursively , then `erlang-dired-mode' minor mode is enabled.
 ;;
+;;  I write a function named `erlang-create-project' ,it will create a Emakefile
+;;  and a Makefile(copide from mochiweb.) and erlang standard project .
 
+;; `erlang-compile-dwim'
+;;  if Emakefile exists in project root directory ,call "make:all[load]"
+;;  if not call `erlang-compile'
+;;  with  prefix `C-u':
+;;  if Makefile exists in project root directory ,all make --directory project-root-directory
+;;  if not call default make command (maybe ks "make -k")
+;;
 ;;; Commands:
 ;;
 ;; Below are complete command list:
 ;;
 ;;  `erlang-emake'
-;;    run make:all(load) in project root of erlang application.
+;;    run make:all(load) in project root of erlang application,if Emakefile doesn't exists ,call `erlang-compile' instead
 ;;  `erlang-make'
 ;;    run make command at project root directory
 ;;  `erlang-compile-dwim'
-;;    run make:all(load), if  Emakefile doesn't exists,call `erlang-compile' if with prefix `C-u' then run make.
+;;    call `erlang-emake', if with prefix `C-u' then run call `erlang-make'.
 ;;  `erlang-dired-mode'
 ;;    Erlang application development minor mode.
 ;;
@@ -141,7 +152,7 @@ if found return the directory or nil
 
 ;;;###autoload
 (defun erlang-emake (arg)
-  "run make:all(load) in project root of erlang application."
+  "run make:all(load) in project root of erlang application,if Emakefile doesn't exists ,call `erlang-compile' instead"
   (interactive "P")
   (let ((project-root (erlang-root)))
     (if (not project-root)
@@ -190,7 +201,7 @@ if found return the directory or nil
 
 ;;;###autoload
 (defun erlang-compile-dwim(&optional arg)
-  "run make:all(load), if  Emakefile doesn't exists,call `erlang-compile' if with prefix `C-u' then run make."
+  "call `erlang-emake', if with prefix `C-u' then run call `erlang-make'."
   (interactive "P")
   (if arg
       (call-interactively 'erlang-make)      ;`C-u'
