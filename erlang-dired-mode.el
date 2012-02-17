@@ -2,14 +2,13 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-02-17 16:25:10 金曜日
+;; Last Updated: Joseph 2012-02-17 16:29:29 金曜日
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
-;; Maintainer:  Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
 ;; X-URL:git://github.com/jixiuf/erlang-dired-mode.git
 
-;; Copyright (C) 2011, 纪秀峰, all rights reserved.
+;; Copyright (C) 2011,2012 纪秀峰, all rights reserved.
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
