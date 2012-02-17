@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-02-13 13:49:20 月曜日
+;; Last Updated: Joseph 2012-02-17 16:25:10 金曜日
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Maintainer:  Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
@@ -212,13 +212,13 @@ if found return the directory or nil
         (sit-for 0)
         (inferior-erlang-wait-prompt)
 
-        (inferior-erlang-send-command
-         "make:all([load])." nil)
+        (setq end (inferior-erlang-send-command
+                   "make:all([load])." nil))
         (sit-for 0)
         (inferior-erlang-wait-prompt)
-
-        (setq end (inferior-erlang-send-command
-                   "cd(\"ebin/\")." nil))
+        (when (file-exists-p (expand-file-name "ebin" project-root))
+          (setq end (inferior-erlang-send-command
+                     "cd(\"ebin/\")." nil))  )
         (sit-for 0)
         (inferior-erlang-wait-prompt)
         (with-current-buffer inferior-erlang-buffer
