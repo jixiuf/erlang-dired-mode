@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-03-29 11:41:55 星期四
+;; Last Updated: Joseph 2012-03-29 11:44:10 星期四
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -245,6 +245,15 @@ if found return the directory or nil
         (compile-command compile-command))
     (when project-root
       (setq compile-command (concat "make --directory=" project-root))
+      ;; copy src/*.app.src to ebin/*.app
+      (dolist (filename (directory-files (expand-file-name "src/" project-root)))
+        (cond
+         ((string=  (file-name-extension filename) "app")
+          (copy-file (expand-file-name (concat "src/" filename) project-root)
+                     (expand-file-name (concat "ebin/" filename) project-root)))
+         ((string=  (file-name-extension filename) "src")
+          (copy-file (expand-file-name (concat "src/" filename) project-root)
+                     (expand-file-name (concat "ebin/" (file-name-sans-extension  filename)) project-root)))))
       )
     (call-interactively 'compile)
     )
