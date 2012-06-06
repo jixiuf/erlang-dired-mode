@@ -3,7 +3,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-06-06 11:01:32 星期三
+;; Last Updated: Joseph 2012-06-06 11:05:03 星期三
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -36,7 +36,7 @@
 ;;  if Emakefile exists in project root directory ,call "make:all[load]"
 ;;  if not call `erlang-compile'
 ;;  with  prefix `C-u':
-;;  if Makefile exists in project root directory ,all make --directory project-root-directory
+;;  if Makefile exists in project root directory ,call make --directory project-root-directory
 ;;  if not call default make command (maybe ks "make -k")
 ;;
 ;;; Commands:
