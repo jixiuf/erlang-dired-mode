@@ -3,7 +3,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-06-05 19:42:08 星期二
+;; Last Updated: Joseph 2012-06-06 11:01:32 星期三
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -152,6 +152,7 @@
       (insert "PREFIX:=../\n")
       (insert "DEST:=$(PREFIX)$(PROJECT)\n")
       (insert "REBAR=./rebar\n")
+      (insert ".PHONY:test")
       (insert "\n")
       (insert "all:\n")
       (insert "	@$(REBAR) get-deps compile\n")
