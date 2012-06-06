@@ -3,7 +3,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-06-05 19:37:03 星期二
+;; Last Updated: Joseph 2012-06-05 19:42:08 星期二
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -168,7 +168,7 @@
       (insert "dialyzer:\n")
       (insert "	@$(REBAR) dialyze\n")
       (insert "app:\n")
-   　　(insert "    @$(REBAR) create-app dest=$(DEST) appid=$(PROJECT)\n")
+      (insert "	@$(REBAR) create-app dest=$(DEST) appid=$(PROJECT)\n")
       )
     )
   (dired root-dir)
