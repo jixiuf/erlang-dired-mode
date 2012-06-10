@@ -1,9 +1,8 @@
-
-;;; erlang-dired.el --- erlang dired mode    -*- coding:utf-8 -*-
+;;; erlang-dired-mode.el --- erlang dired mode    -*- coding:utf-8 -*-
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-06-06 11:46:33 星期三
+;; Last Updated: Joseph 2012-06-10 15:30:27 星期日
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -335,4 +334,4 @@ if found return the directory or nil
 (add-hook 'erlang-mode-hook 'erlang-mode-hook-1)
 
 (provide 'erlang-dired-mode)
-;;; erlang-dired.el ends here
+;;; erlang-dired-mode.el ends here
