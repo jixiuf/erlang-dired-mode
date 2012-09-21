@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-06-10 15:30:27 星期日
+;; Last Updated: Joseph 2012-09-21 20:19:08 星期五
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -84,10 +84,10 @@
         (require 'compile))))
 
 ;;;###autoload
-(defun erlang-export-current-function()
-  "export current function."
-  (interactive)
-  (save-excursion
+(defun erlang-export-current-function(&optional arg)
+  "export current function.,with prefix `C-u' save `funname/argc' to king-ring."
+  (interactive "P")
+  (let ((init-pos (point-marker)) save-pos)
     (goto-char (car (bounds-of-thing-at-point 'defun)))
     (when (re-search-forward "(\\(.*?\\))") ;search params
       (let ((params (match-string 1))
@@ -108,22 +108,49 @@
             )
           )
         (setq fun-declare (format "%s/%d" funname param-count))
-        (message "export function:%s" fun-declare)
-        (goto-char (point-min))
-        (if (re-search-forward "[ \t]*-export[ \t]*([ \t]*\\[" (point-max) t)
-            (if (looking-at "[ \t]*\\]")
-                (insert fun-declare )
-              (insert fun-declare ",")
-              )
-          (goto-char (point-min))
-          (if (re-search-forward "[ \t]*-module[ \t]*(" (point-max) t)
-              (progn
-                (end-of-line)
-                (insert "\n-export([" fun-declare "]).\n"))
+        (cond
+         (arg                         ; with C-u
+          (message "copy function:%s to kill-ring" fun-declare)
 
+          (kill-new  fun-declare)
+          (cond
+           ((progn (goto-char (point-min))(re-search-forward "[ \t]*-export[ \t]*([ \t]*\\[" (point-max) t))
+            (looking-at "[ \t]*\\]"))
+           ((progn (goto-char (point-min))(re-search-forward "[ \t]*-module[ \t]*(" (point-max) t))
+            (end-of-line)
+            (insert "\n-export([" fun-declare "]).\n")
+            (goto-char (marker-position init-pos))
+            )
+           (t (goto-char (point-min))
+              (insert "-export([" fun-declare "]).\n")
+              (goto-char (marker-position init-pos))
+            )
+           )
+          )
+         (t
+          (message "export function:%s" fun-declare)
+          (goto-char (point-min))
+          (if (re-search-forward "[ \t]*-export[ \t]*([ \t]*\\[" (point-max) t)
+              (if (looking-at "[ \t]*\\]")
+                  (insert fun-declare )
+                (insert fun-declare ",")
+                )
             (goto-char (point-min))
-            (insert "-export([" fun-declare "]).\n")
-            ))))))
+            (if (re-search-forward "[ \t]*-module[ \t]*(" (point-max) t)
+                (progn
+                  (end-of-line)
+                  (insert "\n-export([" fun-declare "]).\n"))
+
+              (goto-char (point-min))
+              (insert "-export([" fun-declare "]).\n")
+              ))
+          (goto-char (marker-position init-pos))
+          )
+         )
+        ))
+
+    )
+  )
 
 ;;;###autoload
 (defun erlang-create-project(root-dir)
