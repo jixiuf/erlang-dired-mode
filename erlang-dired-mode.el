@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-09-21 20:19:08 星期五
+;; Last Updated: Joseph 2012-09-26 20:49:38 星期三
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -221,6 +221,7 @@
   (unless  (file-exists-p (expand-file-name "rebar.config" root-dir))
     (with-temp-file (expand-file-name "rebar.config" root-dir)
       (insert "%% -*- erlang -*-\n")
+      (insert "%% {erl_opts, [debug_info,{src_dirs, ['src/']}, nowarn_unused_vars, nowarn_unused_function,native,{hipe,[o3]}]}.\n")
       (insert "{erl_opts, [debug_info]}.\n")
       (insert "{sub_dirs, [\"rel\"]}.\n")
       (insert "{lib_dirs,[\"..\"]}.\n")
