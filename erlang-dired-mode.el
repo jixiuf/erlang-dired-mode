@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-09-26 20:49:38 星期三
+;; Last Updated: Joseph 2012-09-27 18:23:40 星期四
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -325,7 +325,7 @@ if found return the directory or nil
   (interactive "P")
   (if arg
       (call-interactively 'erlang-make)      ;`C-u'
-    (call-interactively ' erlang-emake)
+    (call-interactively 'erlang-emake)
     )
   )
 
