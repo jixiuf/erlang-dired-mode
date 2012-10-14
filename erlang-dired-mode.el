@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: 纪秀峰 2012-10-14 22:31:47 星期日
+;; Last Updated: 纪秀峰 2012-10-14 23:06:48 星期日
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -319,27 +319,29 @@ if found return the directory or nil
     )
   )
 ;;;###autoload
-(defun erlang-compile-cur-buffer()
-"compile current buffer to `project-root'/ebin"
-(interactive)
+(defun erlang-auto-compile()
+  "auto compile current buffer to `project-root'/ebin when save"
+  (interactive)
   (let ((project-root (erlang-root))
-        (src (buffer-file-name)))
-    (inferior-erlang-prepare-for-input)
-      (let* (end)
-        (with-current-buffer inferior-erlang-buffer
-          (compilation-forget-errors))
-        (setq end (inferior-erlang-send-command
-                   (format "c('%s',[{d,debug},debug_info,{i,'%sinclude'},{outdir, '%sebin'}])." src project-root project-root)
-                   nil))
-        (sit-for 0)
-        (inferior-erlang-wait-prompt)
-        (with-current-buffer inferior-erlang-buffer
-          (setq compilation-error-list nil)
-          (set-marker compilation-parsing-end end))
-        (setq compilation-last-buffer inferior-erlang-buffer))
-    )
-  )
-
+        (src (buffer-file-name))
+        end)
+    (when (string-match "\\.erl$" (buffer-name))
+      (or (inferior-erlang-running-p)
+          (save-excursion
+            (inferior-erlang)))
+      (with-current-buffer inferior-erlang-buffer
+        (compilation-forget-errors))
+      (setq end (inferior-erlang-send-command
+                 (format "c('%s',[{d,debug},debug_info,{i,'%sinclude'},{outdir, '%sebin'}])." src project-root project-root)
+                 nil))
+      ;; (sit-for 0)
+      ;; (inferior-erlang-wait-prompt)
+      (with-current-buffer inferior-erlang-buffer
+        (setq compilation-error-list nil)
+        (set-marker compilation-parsing-end end))
+      (setq compilation-last-buffer inferior-erlang-buffer)
+      )
+    ))
 
 ;;;###autoload
 (defun erlang-compile-dwim(&optional arg)
@@ -380,6 +382,8 @@ if found return the directory or nil
 ;;;###autoload
 (defun erlang-mode-hook-1()
   (define-key erlang-mode-map (kbd "C-c C-k") 'erlang-compile-dwim) ;C-cC-k
+  (add-hook 'after-save-hook 'erlang-auto-compile nil t)
+
   )
 (add-hook 'erlang-mode-hook 'erlang-mode-hook-1)
 
