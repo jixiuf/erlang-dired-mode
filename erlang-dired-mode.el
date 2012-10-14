@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: Joseph 2012-09-27 18:23:40 星期四
+;; Last Updated: 纪秀峰 2012-10-14 22:31:47 星期日
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -318,6 +318,28 @@ if found return the directory or nil
     (call-interactively 'compile)
     )
   )
+;;;###autoload
+(defun erlang-compile-cur-buffer()
+"compile current buffer to `project-root'/ebin"
+(interactive)
+  (let ((project-root (erlang-root))
+        (src (buffer-file-name)))
+    (inferior-erlang-prepare-for-input)
+      (let* (end)
+        (with-current-buffer inferior-erlang-buffer
+          (compilation-forget-errors))
+        (setq end (inferior-erlang-send-command
+                   (format "c('%s',[{d,debug},debug_info,{i,'%sinclude'},{outdir, '%sebin'}])." src project-root project-root)
+                   nil))
+        (sit-for 0)
+        (inferior-erlang-wait-prompt)
+        (with-current-buffer inferior-erlang-buffer
+          (setq compilation-error-list nil)
+          (set-marker compilation-parsing-end end))
+        (setq compilation-last-buffer inferior-erlang-buffer))
+    )
+  )
+
 
 ;;;###autoload
 (defun erlang-compile-dwim(&optional arg)
