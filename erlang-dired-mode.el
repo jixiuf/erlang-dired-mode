@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: 纪秀峰 2012-10-18 13:38:15 星期四
+;; Last Updated: 纪秀峰 2012-10-25 11:59:00 星期四
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -322,7 +322,7 @@ if found return the directory or nil
 (defun erlang-auto-compile()
   "auto compile current buffer to `project-root'/ebin when save"
   (interactive)
-  (let ((project-root (erlang-root))
+  (let ((project-root (or  (erlang-root) ""))
         (src (buffer-file-name))
         end)
     (when (string-match "\\.erl$" (buffer-name))
