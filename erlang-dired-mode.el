@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: 纪秀峰 2012-10-31 10:58:44 星期三
+;; Last Updated: 纪秀峰 2012-10-31 16:14:29 星期三
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -166,8 +166,7 @@
   (make-directory (expand-file-name  "test" root-dir) t)
   (make-directory (expand-file-name  "deps" root-dir) t)
   (make-directory (expand-file-name  "priv" root-dir) t)
-  (unless (or (file-exists-p (expand-file-name "Emakefile" root-dir))
-              (file-exists-p  (expand-file-name "Emakefile" root-dir)))
+  (unless (file-exists-p  (expand-file-name "Emakefile" root-dir))
     (with-temp-file (expand-file-name "Emakefile" root-dir)
       (insert "{ 'src/*', [debug_info, {i ,\"include/\"} , {i ,\"deps/\"} ,{outdir,\"ebin/\"}] }.\n")
       (insert "{ 'test/*', [debug_info, {i ,\"src/\"}, {i ,\"deps/\"},{i ,\"include/\"}, {outdir,\"ebin\"} ] }.\n")
@@ -228,6 +227,24 @@
       (insert "{deps, [  ]}.\n")
       (insert "{cover_enabled, true}.\n")
       (insert "{eunit_opts, [verbose, {report,{eunit_surefire,[{dir,\".\"}]}}]}.\n")
+      )
+    )
+  (let* ((proj-root-name (file-name-nondirectory root-dir))
+         (app_src  (expand-file-name (format "src/%s.app.src" proj-root-name) root-dir))
+         )
+    (unless  (file-exists-p app_src)
+      (with-temp-file app_src
+        (insert "%% -*- erlang -*-\n")
+        (insert "{application, log_reader, \n")
+        (insert " [{description, \"desc\"},\n")
+        (insert "  {vsn, \"0.1\"},\n")
+        (insert "  {modules, []},\n")
+        (insert "  {registered, []},\n")
+        (insert (format "  {mod, {%s, []}},\n" proj-root-name))
+        (insert "  {applications, [kernel, stdlib]},\n")
+        (insert "  {env,[]}\n")
+        (insert " ]}.\n")
+        )
       )
     )
   (dired root-dir)
