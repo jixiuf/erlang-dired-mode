@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: 纪秀峰 2012-10-31 16:14:29 星期三
+;; Last Updated: 纪秀峰 2012-10-31 16:21:29 星期三
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -235,7 +235,7 @@
     (unless  (file-exists-p app_src)
       (with-temp-file app_src
         (insert "%% -*- erlang -*-\n")
-        (insert "{application, log_reader, \n")
+        (insert (format "{application, %s, \n" proj-root-name))
         (insert " [{description, \"desc\"},\n")
         (insert "  {vsn, \"0.1\"},\n")
         (insert "  {modules, []},\n")
