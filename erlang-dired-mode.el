@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: 纪秀峰 2012-10-30 17:24:25 星期二
+;; Last Updated: 纪秀峰 2012-10-31 10:58:44 星期三
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -332,7 +332,7 @@ if found return the directory or nil
       (with-current-buffer inferior-erlang-buffer
         (compilation-forget-errors))
       (setq end (inferior-erlang-send-command
-                 (format "c('%s',[{d,debug},debug_info,{i,\"%sinclude\"},{outdir, '%sebin'}])." src project-root project-root)
+                 (format "c('%s',[{d,debug},debug_info,{i,\"%sinclude\"},{i,\"%sdeps\"},{outdir, '%sebin'}])." src project-root project-root project-root)
                  nil))
       ;; (sit-for 0)
       ;; (inferior-erlang-wait-prompt)
