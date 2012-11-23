@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: 纪秀峰 2012-10-31 16:21:29 星期三
+;; Last Updated: 纪秀峰 2012-11-23 13:50:35 星期五
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -168,6 +168,7 @@
   (make-directory (expand-file-name  "priv" root-dir) t)
   (unless (file-exists-p  (expand-file-name "Emakefile" root-dir))
     (with-temp-file (expand-file-name "Emakefile" root-dir)
+      (insert "%% -*- erlang -*- \n")
       (insert "{ 'src/*', [debug_info, {i ,\"include/\"} , {i ,\"deps/\"} ,{outdir,\"ebin/\"}] }.\n")
       (insert "{ 'test/*', [debug_info, {i ,\"src/\"}, {i ,\"deps/\"},{i ,\"include/\"}, {outdir,\"ebin\"} ] }.\n")
       ))
