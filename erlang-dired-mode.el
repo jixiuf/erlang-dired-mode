@@ -2,7 +2,7 @@
 
 ;; Description: erlang dired mode
 ;; Created: 2011-12-20 22:41
-;; Last Updated: 纪秀峰 2012-11-23 13:50:35 星期五
+;; Last Updated: 纪秀峰 2012-11-25 13:16:37 星期日
 ;; Author: Joseph(纪秀峰)  jixiuf@gmail.com
 ;; Keywords: erlang dired Emakefile
 ;; URL: http://www.emacswiki.org/emacs/erlang-dired-mode.el
@@ -109,7 +109,7 @@
           )
         (setq fun-declare (format "%s/%d" funname param-count))
         (cond
-         (arg                         ; with C-u
+         ((and arg (equal arg '(4)))                         ; with C-u
           (message "copy function:%s to kill-ring" fun-declare)
 
           (kill-new  fun-declare)
@@ -124,8 +124,24 @@
            (t (goto-char (point-min))
               (insert "-export([" fun-declare "]).\n")
               (goto-char (marker-position init-pos))
-            )
+              )
            )
+          )
+         ((and arg (equal arg '(16)))                         ; with C-uC-u
+          (message "export function:%s" fun-declare)
+          (goto-char (point-min))
+          (if (re-search-forward "[ \t]*-export[ \t]*([ \t]*\\[" (point-max) t)
+              (progn (beginning-of-line)(insert "-export([" fun-declare "]).\n"))
+            (goto-char (point-min))
+            (if (re-search-forward "[ \t]*-module[ \t]*(" (point-max) t)
+                (progn
+                  (end-of-line)
+                  (insert "\n-export([" fun-declare "]).\n"))
+
+              (goto-char (point-min))
+              (insert "-export([" fun-declare "]).\n")
+              ))
+          (goto-char (marker-position init-pos))
           )
          (t
           (message "export function:%s" fun-declare)
@@ -148,7 +164,6 @@
           )
          )
         ))
-
     )
   )
 
