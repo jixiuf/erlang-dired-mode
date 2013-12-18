@@ -409,7 +409,7 @@ if found return the directory or nil
     )
   )
 
-;;;###autoload
+;;;###autoload(eval-after-load 'erlang '(add-hook 'dired-mode-hook 'erlang-dired-mode-fun))
 (add-hook 'dired-mode-hook 'erlang-dired-mode-fun)
 
 ;;;###autoload
